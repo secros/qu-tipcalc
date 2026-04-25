@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tip Calculator – Calculate Tip & Split the Bill</title>
+  <meta name="description" content="Free tip calculator. Instantly calculate tip amount, total bill, and split evenly between any number of people. No sign-up needed." />
+  <meta name="keywords" content="tip calculator, how much to tip, bill splitter, split the bill calculator, gratuity calculator, restaurant tip" />
+  <link rel="canonical" href="https://tipcalc.quickutils.tools/" />
+  <meta property="og:title" content="Tip Calculator" />
+  <meta property="og:description" content="Calculate tip, total bill, and split between friends — instantly and for free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tipcalc.quickutils.tools/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8872742474601337" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --white: #FFFFFF; --border: #E2E8F0;
+      --ink: #0F172A; --ink-mid: #334155; --ink-light: #64748B;
+      --teal: #0891B2; --teal-light: #CFFAFE; --teal-dark: #0E7490;
+      --radius: 8px; --radius-lg: 14px;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+    .ad-banner-top { background: var(--white); border-bottom: 1px solid var(--border); text-align: center; padding: 8px 16px; font-size: 11px; color: var(--ink-light); letter-spacing: .08em; text-transform: uppercase; }
+    header { background: var(--ink); color: white; padding: 52px 24px 44px; text-align: center; }
+    .header-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #67E8F9; margin-bottom: 16px; font-weight: 400; }
+    header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 14px; }
+    header h1 em { font-style: normal; color: #67E8F9; }
+    header p { font-size: 1rem; color: #94A3B8; max-width: 380px; margin: 0 auto; font-weight: 300; }
+    main { max-width: 580px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* BILL INPUT */
+    .bill-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 16px; }
+    .field-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 10px; display: block; }
+    .bill-input-wrap { position: relative; margin-bottom: 24px; }
+    .bill-input-wrap .currency { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-family: 'DM Mono', monospace; font-size: 1.4rem; color: var(--ink-light); }
+    .bill-input { width: 100%; padding: 16px 16px 16px 40px; font-family: 'DM Mono', monospace; font-size: 1.8rem; font-weight: 700; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--ink); outline: none; transition: border-color .15s; }
+    .bill-input:focus { border-color: var(--teal); }
+
+    /* TIP SELECTOR */
+    .tip-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+    .tip-btn { padding: 12px 4px; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--ink-mid); cursor: pointer; transition: all .15s; }
+    .tip-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .tip-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
+
+    .custom-tip-wrap { margin-bottom: 24px; }
+    .custom-tip-inner { display: flex; align-items: center; gap: 8px; }
+    .custom-tip-inner input { flex: 1; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 1rem; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--ink); outline: none; transition: border-color .15s; }
+    .custom-tip-inner input:focus { border-color: var(--teal); }
+    .custom-tip-inner span { font-size: 1.1rem; color: var(--ink-light); }
+
+    /* PEOPLE */
+    .people-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+    .people-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--bg); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-mid); transition: all .15s; }
+    .people-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .people-count { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--ink); min-width: 32px; text-align: center; }
+
+    /* RESULTS */
+    .results-card { background: var(--ink); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 16px; }
+    .result-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .result-row:last-child { border-bottom: none; }
+    .result-row-label { font-size: 13px; color: #94A3B8; font-weight: 400; }
+    .result-row-value { font-family: 'DM Mono', monospace; font-size: 1.3rem; font-weight: 700; color: white; }
+    .result-row.primary .result-row-label { font-size: 14px; color: #67E8F9; font-weight: 600; }
+    .result-row.primary .result-row-value { font-size: 1.8rem; color: #67E8F9; }
+
+    /* SHARE */
+    .utility-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .utility-bar-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-light); width: 100%; margin-bottom: 4px; }
+    .share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; border: 1px solid var(--border); text-decoration: none; transition: opacity .15s, transform .1s; color: white; }
+    .share-btn:hover { opacity: .85; transform: translateY(-1px); }
+    .share-btn.tw { background: #000; border-color: #000; }
+    .share-btn.fb { background: #1877F2; border-color: #1877F2; }
+    .share-btn.wa { background: #25D366; border-color: #25D366; color: #000; }
+    .share-btn.rd { background: #FF4500; border-color: #FF4500; }
+    .share-btn.cl { background: transparent; color: var(--ink-light); border-color: var(--border); }
+    .share-btn.cl.copied { border-color: #059669; color: #059669; }
+    .bookmark-tip { width: 100%; font-size: 12px; color: var(--ink-light); margin-top: 4px; }
+    .bookmark-tip kbd { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink); }
+
+    .related-section { margin-bottom: 16px; }
+    .related-section h2 { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .related-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-decoration: none; display: block; transition: border-color .15s; }
+    .related-card:hover { border-color: var(--teal); }
+    .related-card-emoji { font-size: 1.3rem; margin-bottom: 6px; }
+    .related-card-title { font-size: .85rem; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+    .related-card-desc { font-size: 11px; color: var(--ink-light); }
+
+    .embed-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+    .embed-section h3 { font-size: 11px; color: var(--ink-light); margin-bottom: 10px; letter-spacing: .05em; text-transform: uppercase; }
+    .embed-code { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-light); word-break: break-all; margin-bottom: 10px; line-height: 1.6; }
+    .embed-copy-btn { padding: 7px 16px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; color: var(--ink-light); cursor: pointer; transition: all .12s; }
+    .embed-copy-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .embed-copy-btn.copied { border-color: #059669; color: #059669; }
+
+    .ad-inline { background: var(--white); border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 16px; text-align: center; color: var(--ink-light); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; min-height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+
+    .content-section { margin-bottom: 16px; }
+    .content-section h2 { font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .faq-item { margin-bottom: 20px; }
+    .faq-item h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+    .faq-item p { font-size: .9rem; color: var(--ink-light); margin: 0; line-height: 1.65; }
+
+    footer { background: var(--ink); color: #334155; text-align: center; padding: 32px 24px; font-size: 13px; margin-top: 48px; }
+    footer a { color: #67E8F9; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="ad-banner-top">Advertisement</div>
+  <header>
+    <p class="header-eyebrow">Free Online Tool</p>
+    <h1>Tip <em>Calculator</em></h1>
+    <p>Calculate tip, total bill, and split between friends — instantly.</p>
+  </header>
+  <main>
+
+    <div class="bill-card">
+      <label class="field-label">Bill amount</label>
+      <div class="bill-input-wrap">
+        <span class="currency">$</span>
+        <input class="bill-input" type="number" id="bill" placeholder="0.00" min="0" oninput="calculate()" />
+      </div>
+
+      <label class="field-label">Tip percentage</label>
+      <div class="tip-grid">
+        <button class="tip-btn" onclick="setTip(10)">10%</button>
+        <button class="tip-btn" onclick="setTip(15)">15%</button>
+        <button class="tip-btn active" onclick="setTip(18)">18%</button>
+        <button class="tip-btn" onclick="setTip(20)">20%</button>
+        <button class="tip-btn" onclick="setTip(25)">25%</button>
+      </div>
+
+      <div class="custom-tip-wrap">
+        <label class="field-label">Or enter custom tip</label>
+        <div class="custom-tip-inner">
+          <input type="number" id="custom-tip" placeholder="e.g. 22" min="0" oninput="setCustomTip()" />
+          <span>%</span>
+        </div>
+      </div>
+
+      <label class="field-label">Split between</label>
+      <div class="people-row">
+        <button class="people-btn" onclick="changePeople(-1)">−</button>
+        <span class="people-count" id="people-count">1</span>
+        <button class="people-btn" onclick="changePeople(1)">+</button>
+        <span style="font-size:13px;color:var(--ink-light);margin-left:4px;" id="people-label">person</span>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-card">
+      <div class="result-row">
+        <span class="result-row-label">Bill amount</span>
+        <span class="result-row-value" id="r-bill">$0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">Tip (<span id="r-tip-pct">18</span>%)</span>
+        <span class="result-row-value" id="r-tip">$0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-row-label">Total bill</span>
+        <span class="result-row-value" id="r-total">$0.00</span>
+      </div>
+      <div class="result-row primary">
+        <span class="result-row-label" id="r-per-label">Per person</span>
+        <span class="result-row-value" id="r-per">$0.00</span>
+      </div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="utility-bar">
+      <span class="utility-bar-label">Share this tool:</span>
+      <a class="share-btn tw" id="sh-tw" href="#" target="_blank" rel="noopener">𝕏 Twitter</a>
+      <a class="share-btn fb" id="sh-fb" href="#" target="_blank" rel="noopener">Facebook</a>
+      <a class="share-btn wa" id="sh-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="share-btn rd" id="sh-rd" href="#" target="_blank" rel="noopener">Reddit</a>
+      <button class="share-btn cl" id="sh-cl" onclick="copyLink()">Copy link</button>
+      <div class="bookmark-tip" id="bookmark-text">Press <kbd>Ctrl+D</kbd> to bookmark this tool.</div>
+    </div>
+
+    <div class="related-section">
+      <h2>More free tools</h2>
+      <div class="related-grid" id="related-tools-grid"></div>
+    </div>
+
+    <div class="embed-section">
+      <h3>Embed this tool on your site</h3>
+      <p style="font-size:12px;color:var(--ink-light);margin-bottom:10px;">Free to embed. Includes a "Powered by quickutils.tools" link.</p>
+      <div class="embed-code">&lt;iframe src="https://tipcalc.quickutils.tools/?embed=1" width="100%" height="520" frameborder="0" title="Tip Calculator — quickutils.tools"&gt;&lt;/iframe&gt;</div>
+      <button class="embed-copy-btn" onclick="copyEmbed(this)">Copy embed code</button>
+    </div>
+
+    <div class="ad-inline">Advertisement · 728×90</div>
+
+    <div class="content-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>How much should I tip at a restaurant?</h3>
+        <p>In the US, standard restaurant tips are <strong>15–20%</strong> for good service, 18–22% for great service, and 10–15% for average service. For exceptional service or a fine dining experience, 25% or more is appreciated.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do you tip on the pre-tax or post-tax amount?</h3>
+        <p>Traditionally, tips are calculated on the pre-tax subtotal. However, in practice most people tip on the total bill including tax — the difference is small and servers appreciate the extra.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How do I split a bill evenly?</h3>
+        <p>Add the tip to the total bill, then divide by the number of people. For example, a $100 bill with 20% tip = $120 total. Split 4 ways = $30 per person. Use the calculator above to do this instantly.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How much do you tip for delivery?</h3>
+        <p>For food delivery, <strong>15–20%</strong> of the order total (or a minimum of $3–5) is standard. For larger or complex orders, tip more. Tips go directly to the driver.</p>
+      </div>
+    </div>
+
+  </main>
+  <footer>
+    <div class="footer-links">
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="https://quickutils.tools/contact.html">Contact</a>
+      <a href="https://quickutils.tools">All Tools</a>
+    </div>
+    <p>&copy; 2026 <a href="https://quickutils.tools">quickutils.tools</a> — All calculations happen in your browser. No data stored.</p>
+  </footer>
+
+  <script>
+    const TOOL_URL = 'https://tipcalc.quickutils.tools/';
+    const SHARE_MSG = encodeURIComponent('Free tip calculator — calculate tip and split the bill instantly: ' + TOOL_URL);
+    const ENC_URL = encodeURIComponent(TOOL_URL);
+
+    const isMac = /mac/i.test(navigator.platform);
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
+    if (isIOS) document.getElementById('bookmark-text').innerHTML = '🔖 Tap share (↑) then "Add to Home Screen".';
+    else if (isAndroid) document.getElementById('bookmark-text').innerHTML = '🔖 Tap menu (⋮) then "Add to Home Screen".';
+    else if (isMac) document.getElementById('bookmark-text').innerHTML = 'Press <kbd>Cmd+D</kbd> to bookmark this tool.';
+
+    document.getElementById('sh-tw').href = `https://twitter.com/intent/tweet?text=${SHARE_MSG}`;
+    document.getElementById('sh-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${ENC_URL}`;
+    document.getElementById('sh-wa').href = `https://wa.me/?text=${SHARE_MSG}`;
+    document.getElementById('sh-rd').href = `https://www.reddit.com/submit?url=${ENC_URL}&title=${encodeURIComponent('Free tip calculator — calculate tip and split the bill')}`;
+
+    function copyLink() {
+      navigator.clipboard.writeText(TOOL_URL).then(() => {
+        const btn = document.getElementById('sh-cl');
+        btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy link'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+    function copyEmbed(btn) {
+      navigator.clipboard.writeText(document.querySelector('.embed-code').textContent).then(() => {
+        btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy embed code'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    let tipPct = 18;
+    let people = 1;
+
+    function setTip(pct) {
+      tipPct = pct;
+      document.querySelectorAll('.tip-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('custom-tip').value = '';
+      calculate();
+    }
+
+    function setCustomTip() {
+      const val = parseFloat(document.getElementById('custom-tip').value);
+      if (!isNaN(val) && val >= 0) {
+        tipPct = val;
+        document.querySelectorAll('.tip-btn').forEach(b => b.classList.remove('active'));
+        calculate();
+      }
+    }
+
+    function changePeople(d) {
+      people = Math.max(1, people + d);
+      document.getElementById('people-count').textContent = people;
+      document.getElementById('people-label').textContent = people === 1 ? 'person' : 'people';
+      calculate();
+    }
+
+    function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+    function calculate() {
+      const bill = parseFloat(document.getElementById('bill').value) || 0;
+      const tip = bill * (tipPct / 100);
+      const total = bill + tip;
+      const perPerson = total / people;
+
+      document.getElementById('r-bill').textContent = fmt(bill);
+      document.getElementById('r-tip').textContent = fmt(tip);
+      document.getElementById('r-tip-pct').textContent = tipPct;
+      document.getElementById('r-total').textContent = fmt(total);
+      document.getElementById('r-per').textContent = fmt(perPerson);
+      document.getElementById('r-per-label').textContent = people === 1 ? 'Per person' : `Per person (${people} people)`;
+    }
+
+    calculate();
+
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.querySelector('.ad-banner-top').style.display = 'none';
+      document.querySelector('header').style.display = 'none';
+      document.querySelector('.related-section') && (document.querySelector('.related-section').style.display = 'none');
+      document.querySelector('.embed-section') && (document.querySelector('.embed-section').style.display = 'none');
+      document.querySelector('.content-section') && (document.querySelector('.content-section').style.display = 'none');
+      document.querySelector('.ad-inline') && (document.querySelector('.ad-inline').style.display = 'none');
+      document.querySelector('footer').innerHTML = '<div style="text-align:center;padding:12px;font-size:12px;font-family:sans-serif;color:#64748B;">Powered by <a href="https://quickutils.tools" target="_blank" style="color:#0891B2;text-decoration:none;font-weight:500;">quickutils.tools</a></div>';
+    }
+  </script>
+  <script src="https://quickutils.tools/tools.js" onload="renderRelatedTools({currentUrl:'https://tipcalc.quickutils.tools/'})"></script>
+</body>
+</html>
